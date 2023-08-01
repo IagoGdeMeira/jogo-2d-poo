@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Principal",
+            "request": "launch",
+            "mainClass": "ifpr.paranavai.jogo.principal.Principal",
+            "projectName": "jogo-2d-poo_29664afd"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"

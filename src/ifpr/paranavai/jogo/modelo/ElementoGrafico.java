@@ -1,14 +1,21 @@
 package ifpr.paranavai.jogo.modelo;
 
 import java.awt.Image;
+import java.awt.Rectangle;
 
 public abstract class ElementoGrafico {
     protected int posicaoEmX, posicaoEmY;
     protected Image imagem;
     protected int larguraImagem, alturaImagem;
     
+    private boolean ehVisivel = true;
+
     abstract protected void carregar();
     abstract protected void atualizar();
+
+    public Rectangle getRetangle() {
+        return new Rectangle(posicaoEmX, posicaoEmY, larguraImagem, alturaImagem);
+    }
 
     public int getPosicaoEmX() {
         return posicaoEmX;
@@ -48,5 +55,13 @@ public abstract class ElementoGrafico {
 
     public void setAlturaImagem(int alturaImagem) {
         this.alturaImagem = alturaImagem;
+    }
+
+    public boolean getEhVisivel() {
+        return ehVisivel;
+    }
+
+    public void setEhVisivel(boolean ehVisivel) {
+        this.ehVisivel = ehVisivel;
     }
 }

@@ -1,12 +1,13 @@
 package ifpr.paranavai.jogo.principal;
 
 import ifpr.paranavai.jogo.modelo.Fase;
+import ifpr.paranavai.jogo.modelo.FaseUm;
 
 import javax.swing.JFrame;
 
 public class Principal extends JFrame {
     public Principal() {
-        Fase fase = new Fase();
+        Fase fase = new FaseUm();
         super.add(fase);
         super.setTitle("Invasores Horizontais");
         super.setSize(1024, 728);
