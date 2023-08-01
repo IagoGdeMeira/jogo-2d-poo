@@ -2,8 +2,10 @@ package ifpr.paranavai.jogo.modelo;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -39,21 +41,52 @@ public class FaseUm extends Fase {
     @Override
     public void paint(Graphics g) {
         Graphics2D graficos = (Graphics2D) g;
-        graficos.drawImage(fundo, 0, 0, null);
-        graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(), this);
+        if(emJogo) {
+            graficos.drawImage(fundo, 0, 0, null);
+            graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(), this);
 
-        ArrayList<Tiro> tiros = personagem.getTiros();
-        for(Tiro tiro : tiros) {
-            tiro.carregar();
-            graficos.drawImage(tiro.getImagem(), tiro.getPosicaoEmX(), tiro.getPosicaoEmY(), this);
-        }
+            ArrayList<Tiro> tiros = personagem.getTiros();
+            for(Tiro tiro : tiros) {
+                tiro.carregar();
+                graficos.drawImage(tiro.getImagem(), tiro.getPosicaoEmX(), tiro.getPosicaoEmY(), this);
+            }
 
-        for(Inimigo inimigo : inimigos) {
-            inimigo.carregar();
-            graficos.drawImage(inimigo.getImagem(), inimigo.getPosicaoEmX(), inimigo.getPosicaoEmY(), this);
+            for(Inimigo inimigo : inimigos) {
+                inimigo.carregar();
+                graficos.drawImage(inimigo.getImagem(), inimigo.getPosicaoEmX(), inimigo.getPosicaoEmY(), this);
+            }
+        } else {
+            ImageIcon fimDeJogo = new ImageIcon("recursos\\fim-de-jogo.png");
+            graficos.drawImage(fimDeJogo.getImage(), 0, 0, null);
         }
 
         g.dispose();
+    }
+
+    @Override
+    public void verificarColisoes() {
+        Rectangle formaPersonagem = this.personagem.getRetangle();
+        for(int i = 0; i < this.inimigos.size(); i++) {
+            Inimigo inimigo = inimigos.get(i);
+            Rectangle formaInimigo = inimigo.getRetangle();
+            
+            if(formaInimigo.intersects(formaPersonagem)) {
+                this.personagem.setEhVisivel(false);
+                inimigo.setEhVisivel(false);
+                emJogo = false;
+            }
+
+            ArrayList<Tiro> tiros = this.personagem.getTiros();
+            for(int j = 0; j < tiros.size(); j++) {
+                Tiro tiro = tiros.get(j);
+                Rectangle formaTiro = tiro.getRetangle();
+
+                if(formaInimigo.intersects(formaTiro)) {
+                    inimigo.setEhVisivel(false);
+                    tiro.setEhVisivel(false);
+                }
+            }
+        }
     }
 
     @Override
@@ -75,7 +108,8 @@ public class FaseUm extends Fase {
 
         ArrayList<Tiro> tiros = personagem.getTiros();
         for(int i = 0; i < tiros.size(); i++) {
-            if(tiros.get(i).getPosicaoEmX() > LARGURA_DA_JANELA) 
+            Tiro tiro = tiros.get(i);
+            if(tiros.get(i).getPosicaoEmX() > LARGURA_DA_JANELA || !tiro.getEhVisivel()) 
                 tiros.remove(i);
             else
                 tiros.get(i).atualizar();
@@ -83,11 +117,13 @@ public class FaseUm extends Fase {
 
         for(int i = 0; i < inimigos.size(); i++) {
             Inimigo inimigo = this.inimigos.get(i);
-            if (inimigo.getPosicaoEmX() < 0)
+            if (inimigo.getPosicaoEmX() < 0 || !inimigo.getEhVisivel())
                 inimigos.remove(inimigo);
             else
                 inimigo.atualizar();
         }
+
+        this.verificarColisoes();
 
         repaint();
     }
