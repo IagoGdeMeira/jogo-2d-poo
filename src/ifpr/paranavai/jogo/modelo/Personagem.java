@@ -22,17 +22,28 @@ public class Personagem extends ElementoGrafico {
 
     public void mover(KeyEvent tecla) {
         int codigo = tecla.getKeyCode();
-        switch(codigo) {
-            case KeyEvent.VK_UP:
+        int caso = 0;
+
+        if(codigo == KeyEvent.VK_UP || codigo == KeyEvent.VK_W)
+            caso = 1;
+        else if(codigo == KeyEvent.VK_DOWN || codigo == KeyEvent.VK_S)
+            caso = 2;
+        else if(codigo == KeyEvent.VK_LEFT || codigo == KeyEvent.VK_A)
+            caso = 3;
+        else if(codigo == KeyEvent.VK_RIGHT || codigo == KeyEvent.VK_D)
+            caso = 4;
+
+        switch(caso) {
+            case 1:
                 this.deslocamentoEmY = -DESLOCAMENTO;
                 break;
-            case KeyEvent.VK_DOWN:
+            case 2:
                 this.deslocamentoEmY = DESLOCAMENTO;
                 break;
-            case KeyEvent.VK_LEFT:
+            case 3:
                 this.deslocamentoEmX = -DESLOCAMENTO;
                 break;
-            case KeyEvent.VK_RIGHT:
+            case 4:
                 this.deslocamentoEmX = DESLOCAMENTO;
                 break;
             default:
@@ -42,17 +53,28 @@ public class Personagem extends ElementoGrafico {
 
     public void parar(KeyEvent tecla) {
         int codigo = tecla.getKeyCode();
-        switch(codigo) {
-            case KeyEvent.VK_UP:
+        int caso = 0;
+
+        if(codigo == KeyEvent.VK_UP || codigo == KeyEvent.VK_W)
+            caso = 1;
+        else if(codigo == KeyEvent.VK_DOWN || codigo == KeyEvent.VK_S)
+            caso = 2;
+        else if(codigo == KeyEvent.VK_LEFT || codigo == KeyEvent.VK_A)
+            caso = 3;
+        else if(codigo == KeyEvent.VK_RIGHT || codigo == KeyEvent.VK_D)
+            caso = 4;
+        
+        switch(caso) {
+            case 1:
                 this.deslocamentoEmY = 0;
                 break;
-            case KeyEvent.VK_DOWN:
+            case 2:
                 this.deslocamentoEmY = 0;
                 break;
-            case KeyEvent.VK_LEFT:
+            case 3:
                 this.deslocamentoEmX = 0;
                 break;
-            case KeyEvent.VK_RIGHT:
+            case 4:
                 this.deslocamentoEmX = 0;
                 break;
             default:
