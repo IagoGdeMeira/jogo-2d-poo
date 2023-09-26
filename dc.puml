@@ -3,8 +3,10 @@
 abstract GraphicElement <<abstract>> {
   - int x
   - int y
+  
   - int movementX
   - int movementY
+  - int movementSpeed
   
   - Image element
   - int widthElement
@@ -12,8 +14,8 @@ abstract GraphicElement <<abstract>> {
   
   - boolean isVisible
   ----
-  + abstract void load()
-  + abstract void update()
+  + {abstract} void load()
+  + {abstract} void update()
   + Rectangle getRectangle()
   ..getters and setters..
 }
@@ -29,5 +31,60 @@ class Enemy {
 class Asteroid {
   + Asteroid(int x, int y)
 }
+
+class Player {
+  - int vidas
+  --
+  + Player()
+  + void shoot()
+  + void move(KeyEvent key)
+  + void stop(KeyEvent key)
+  ..getters and setters..
+}
+
+abstract Stage <<abstract>> {
+  # Image background
+  # Timer timer
+  # boolean inGame
+  --
+  + Stage()
+  + {abstract} void startBackgroundGEs()
+  + {abstract} void startEnemies()
+  + {abstract} void verifyColisions()
+  + {abstract} void paint(Graphics g)
+  + {abstract} void keyTyped(KeyEvent e)
+  + {abstract} void keyPressed(KeyEvent e)
+  + {abstract} void keyReleased(KeyEvent e)
+  + {abstract} void actionPerformed(ActionEvent e)
+}
+
+GraphicElement <|-- Asteroid :extends
+GraphicElement <|--- Player :extends
+GraphicElement <|- Blast :extends
+GraphicElement <|- Enemy :extends
+
+Player "1" *-> "*" Blast
+
+Stage "1" *-> "1" Player
+Stage "1" *---> "*" Enemy
+Stage "1" *---> "*" Asteroid
+
+interface KeyListener <<interface>> {
+  + void keyTyped(KeyEvent e)
+  + void keyPressed(KeyEvent e)
+  + void keyReleased(KeyEvent e)
+}
+
+interface ActionListener <<interface>> {
+  + void actionPerformed(ActionEvent e)
+}
+
+class JPanel {
+  + void paint(Graphics g)
+}
+
+Stage ....|> KeyListener :implements
+Stage --|> JPanel :extends
+Stage .|> ActionListener :implements
 
 @enduml
