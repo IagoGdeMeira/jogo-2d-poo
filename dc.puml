@@ -14,31 +14,47 @@ abstract GraphicElement <<abstract>> {
   
   - boolean isVisible
   ----
-  + {abstract} void load()
+  + {abstract} void load(String directory)
   + {abstract} void update()
-  + Rectangle getRectangle()
+  + Rectangle getColision()
   ..getters and setters..
 }
 
 class Blast {
-  + Blast(int x, int y)
+  + Blast(int x, int y, String elementDirectory)
 }
 
 class Enemy {
-  + Enemy(int x, int y)
+  - int points
+  --
+  + Enemy(int x, int y, String elementDirectory)
+  ..getters and setters..
 }
 
 class Asteroid {
-  + Asteroid(int x, int y)
+  + Asteroid(int x, int y, String elementDirectory)
 }
 
 class Player {
-  - int vidas
+  - int lives
+  - int points
   --
-  + Player()
+  + Player(String elementDirectory)
   + void shoot()
   + void move(KeyEvent key)
   + void stop(KeyEvent key)
+  ..getters and setters..
+}
+
+abstract Commands <<abstract>> {
+  - boolean upCommand
+  - boolean downCommand
+  - boolean leftCommand
+  - boolean rightCommand
+
+  - boolean blastCommand
+  - boolean superBlastCommand
+  ----
   ..getters and setters..
 }
 
@@ -46,6 +62,7 @@ abstract Stage <<abstract>> {
   # Image background
   # Timer timer
   # boolean inGame
+  # boolean gameOver
   --
   + Stage()
   + {abstract} void startBackgroundGEs()
@@ -63,9 +80,10 @@ GraphicElement <|--- Player :extends
 GraphicElement <|- Blast :extends
 GraphicElement <|- Enemy :extends
 
-Player "1" *-> "*" Blast
+Player "1" *--> "*" Blast
+Player "1" *--> "1" Commands
 
-Stage "1" *-> "1" Player
+Stage "1" *--> "1" Player
 Stage "1" *---> "*" Enemy
 Stage "1" *---> "*" Asteroid
 
