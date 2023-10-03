@@ -47,13 +47,17 @@ class Player {
 }
 
 abstract Commands <<abstract>> {
-  - boolean upCommand
-  - boolean downCommand
-  - boolean leftCommand
-  - boolean rightCommand
-
-  - boolean blastCommand
-  - boolean superBlastCommand
+  - {static} int goUp1
+  - {static} int goUp2
+  - {static} int goDown1
+  - {static} int goDown2
+  - {static} int goLeft1
+  - {static} int goLeft2
+  - {static} int goRight1
+  - {static} int goRight2
+  
+  - {static} int doBlast
+  - {static} int doSuperBlast
   ----
   ..getters and setters..
 }
@@ -76,33 +80,3 @@ abstract Stage <<abstract>> {
 }
 
 GraphicElement <|-- Asteroid :extends
-GraphicElement <|--- Player :extends
-GraphicElement <|- Blast :extends
-GraphicElement <|- Enemy :extends
-
-Player "1" *--> "*" Blast
-Player "1" *--> "1" Commands
-
-Stage "1" *--> "1" Player
-Stage "1" *---> "*" Enemy
-Stage "1" *---> "*" Asteroid
-
-interface KeyListener <<interface>> {
-  + void keyTyped(KeyEvent e)
-  + void keyPressed(KeyEvent e)
-  + void keyReleased(KeyEvent e)
-}
-
-interface ActionListener <<interface>> {
-  + void actionPerformed(ActionEvent e)
-}
-
-class JPanel {
-  + void paint(Graphics g)
-}
-
-Stage ....|> KeyListener :implements
-Stage --|> JPanel :extends
-Stage .|> ActionListener :implements
-
-@enduml
